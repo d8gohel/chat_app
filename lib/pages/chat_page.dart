@@ -66,53 +66,61 @@ class _ChatPageState extends State<ChatPage> {
               icon: const Icon(Icons.info))
         ],
       ),
+      
       body: Stack(
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           // chat messages here
-          chatMessages(),
+          // chatMessages(),
+          
+          // chatMessages(),
+           chatMessages(),
+          
           Container(
-            alignment: Alignment.bottomCenter,
-            width: MediaQuery.of(context).size.width,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-              width: MediaQuery.of(context).size.width,
-              color: Colors.grey[700],
-              child: Row(children: [
-                Expanded(
-                    child: TextFormField(
-                  controller: messageController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    hintText: "Send a message...",
-                    hintStyle: TextStyle(color: Colors.white, fontSize: 16),
-                    border: InputBorder.none,
-                  ),
-                )),
-                const SizedBox(
-                  width: 12,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    sendMessage();
-                  },
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: const Center(
-                        child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    )),
-                  ),
-                )
-              ]),
+        alignment: Alignment.bottomCenter,
+        width: MediaQuery.of(context).size.width,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+          width: MediaQuery.of(context).size.width,
+          color: Colors.grey[700],
+          child: Row(children: [
+            Expanded(
+                child: TextFormField(
+              controller: messageController,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintText: "Send a message...",
+                hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                border: InputBorder.none,
+              ),
+            )),
+            const SizedBox(
+              width: 12,
             ),
-          )
+            GestureDetector(
+              onTap: () {
+                sendMessage();
+              },
+              child: Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: const Center(
+                    child: Icon(
+                  Icons.send,
+                  color: Colors.white,
+                )),
+              ),
+            )
+          ]),
+        ),
+      )
         ],
+      
       ),
     );
   }
@@ -125,6 +133,17 @@ class _ChatPageState extends State<ChatPage> {
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
+                  if (index==snapshot.data.docs.length-1) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 100),
+                      child: MessageTile(
+                        message: snapshot.data.docs[index]['message'],
+                        sender: snapshot.data.docs[index]['sender'],
+                        sentByMe: widget.userName ==
+                            snapshot.data.docs[index]['sender']),
+                    );
+
+                  }
                   return MessageTile(
                       message: snapshot.data.docs[index]['message'],
                       sender: snapshot.data.docs[index]['sender'],
